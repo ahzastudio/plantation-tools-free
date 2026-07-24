@@ -25,7 +25,7 @@ To access advanced AI models, automated road optimization, hydrology, and drone 
 * 🚁 **Drone Mission Planner:** Export flight plans directly to DJI WPML format for drone surveying.
 * 🧪 **Chlorosis Detection & Soil Moisture:** Vegetation index analysis (NDVI) and nutrient management.
 
-👉 **Learn more and get PRO Version:** [https://planter.ahzastudio.web.id](https://planter.ahzastudio.web.id)
+👉 **Learn more and get PRO Version:** [https://plantationtools.web.id](https://plantationtools.web.id)
 
 ---
 
@@ -54,5 +54,5 @@ This plugin is licensed under the **GNU General Public License v3.0 (GPL-3.0)** 
 
 * **Author:** Ahza Studio
 * **Email:** admin@ahzastudio.web.id
-* **Official Website:** [https://planter.ahzastudio.web.id](https://planter.ahzastudio.web.id)
+* **Official Website:** [https://plantationtools.web.id](https://plantationtools.web.id)
 * **Issue Tracker:** [Report a Bug](https://github.com/ahzastudio/plantation-tools-free/issues)
