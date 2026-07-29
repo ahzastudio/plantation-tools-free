@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 
 from qgis.core import QgsProcessingException
 from .base_algorithm import BasePlantationAlgorithm
@@ -123,7 +123,7 @@ class CheckLicenseStatus(BasePlantationAlgorithm):
 # ---------------------------------------------------------------------------
 class AnalisisAreaKonservasi(BasePlantationAlgorithm):
     def name(self): return 'analisisareakonservasi'
-    def displayName(self): return '29. Analisis Area Konservasi (NKT / Sempadan)'
+    def displayName(self): return '31. Analisis Area Konservasi (NKT / Sempadan)'
     def groupId(self): return 'environment_nkt'
     def group(self): return '08. Analisa Lingkungan & NKT'
     def get_minimum_tier(self): return 'pro'

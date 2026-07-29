@@ -9,7 +9,9 @@ import zipfile
 import shutil
 import tempfile
 import stat
+# pyrefly: ignore [missing-import]
 from qgis.PyQt.QtCore import QCoreApplication
+# pyrefly: ignore [missing-import]
 from qgis.core import (
     QgsProcessing,
     QgsProcessingAlgorithm,

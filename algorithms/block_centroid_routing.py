@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 from qgis.core import (
     QgsProcessing,
     QgsProcessingAlgorithm,
@@ -24,7 +24,7 @@ class BlockCentroidRouting(BasePlantationAlgorithm):
         return 'blockcentroidrouting'
 
     def displayName(self):
-        return "27. Block Centroid Routing (Kalkulator Jalan via Centroid)"
+        return "29. Block Centroid Routing (Kalkulator Jalan via Centroid)"
 
     def group(self):
         return "07. Analisa Infrastruktur (Jalan & Parit)"

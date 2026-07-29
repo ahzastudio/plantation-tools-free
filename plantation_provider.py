@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 # pyrefly: ignore [missing-import]
 from qgis.core import QgsProcessingProvider
