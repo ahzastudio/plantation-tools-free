@@ -16,7 +16,8 @@ category=Plugins
 icon=icon.png
 tags=plantation, block, grid, palm oil, roads, cost estimator
 
-changelog=v2.1.2
+changelog=v2.1.4
+    - Fixed SyntaxError on plugin load caused by invalid # nosec placement
     - Update contact email to admin@ahzastudio.web.id for official communications
     - Fixed security issues detected by QGIS automated security scanner (Bandit & detect-secrets)
     - Added # nosec and # pragma: allowlist secret tags to explicitly declare safe variables
