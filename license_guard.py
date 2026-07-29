@@ -31,7 +31,7 @@ def get_plugin_version():
                     return line.strip().split("=")[1]
     except Exception:
                         _ = None
-    return "2.1.3"
+    return "2.1.4"
 
 CURRENT_VERSION = get_plugin_version()
 
