@@ -122,7 +122,8 @@ class UpdatePlugin(QgsProcessingAlgorithm):
                             try:
                                 os.chmod(dst_file, stat.S_IWRITE)
                                 os.remove(dst_file)
-                            except: pass
+                            except Exception as e:
+                                QgsMessageLog.logMessage(str(e), "Plantation Tools", Qgis.Warning)
                         shutil.copy2(src_file, dst_dir)
                         
             copy_tree_overwrite(source_dir, current_plugin_dir)
@@ -131,7 +132,8 @@ class UpdatePlugin(QgsProcessingAlgorithm):
             try:
                 shutil.rmtree(extract_temp, ignore_errors=True)
                 os.remove(new_zip_temp)
-            except: pass
+            except Exception as e:
+                QgsMessageLog.logMessage(str(e), "Plantation Tools", Qgis.Warning)
             
             feedback.pushInfo("UPDATE BERHASIL!")
             feedback.pushInfo(f"Plugin telah diupdate ke versi {latest_version}.")
