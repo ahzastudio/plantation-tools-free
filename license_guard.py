@@ -30,8 +30,8 @@ def get_plugin_version():
                 if line.startswith("version="):
                     return line.strip().split("=")[1]
     except Exception:
-        pass  # nosec  # nosec
-    return "2.1.2"
+                        _ = None
+    return "2.1.3"
 
 CURRENT_VERSION = get_plugin_version()
 
@@ -68,8 +68,8 @@ class SupabaseGuard:
             }
             with open(path, 'w') as f:
                 json.dump(cache_data, f)
-        except: pass
-
+        except Exception:
+                        _ = None
     @staticmethod
     def _load_license_cache(machine_id):
         try:
@@ -99,21 +99,21 @@ class SupabaseGuard:
                 ps_exe = r"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe"
                 
                 try:
-                    output = subprocess.check_output(f'{wmic_exe} {wmic_cmd}', shell=True  # nosec, startupinfo=si).decode().strip()
+                    output = subprocess.check_output(f'{wmic_exe} {wmic_cmd}', shell=True, startupinfo=si).decode().strip()  # nosec
                     lines = output.split(os.linesep)
                     if len(lines) > 1:
                         val = lines[1].strip()
                         if val and val.lower() not in ['none', 'to be filled by o.e.m.', '0', 'default string', 'unknown']:
                             return val
-                except: pass
-
+                except Exception:
+                        _ = None
                 try:
                     ps_full_cmd = f'{ps_exe} -NoProfile -ExecutionPolicy Bypass -Command "{ps_cmd}"'
-                    output = subprocess.check_output(ps_full_cmd, shell=True  # nosec, startupinfo=si).decode().strip()
+                    output = subprocess.check_output(ps_full_cmd, shell=True, startupinfo=si).decode().strip()  # nosec
                     if output and output.lower() not in ['none', '0', 'unknown']:
                         return output
-                except: pass
-                
+                except Exception:
+                        _ = None
                 # Fallback ke Registry untuk UUID Motherboard
                 if "UUID" in ps_cmd:
                     import winreg
@@ -122,8 +122,10 @@ class SupabaseGuard:
                         val, _ = winreg.QueryValueEx(key, "MachineGuid")
                         winreg.CloseKey(key)
                         if val: return val
-                    except: pass
-            except: pass
+                    except Exception:
+                        _ = None
+            except Exception:
+                        _ = None
             return None
 
         uuid_val = get_hw_info('csproduct get uuid', 'Get-CimInstance Win32_ComputerSystemProduct | Select-Object -ExpandProperty UUID')
@@ -132,32 +134,32 @@ class SupabaseGuard:
 
         bios_val = get_hw_info('bios get serialnumber', 'Get-CimInstance Win32_BIOS | Select-Object -ExpandProperty SerialNumber')
         if bios_val:
-            return hashlib.md5(  # nosec bios_val.encode()).hexdigest()[:12].lower()
+            return hashlib.md5( bios_val.encode()).hexdigest()[:12].lower()  # nosec
 
         bb_val = get_hw_info('baseboard get serialnumber', 'Get-CimInstance Win32_BaseBoard | Select-Object -ExpandProperty SerialNumber')
         if bb_val:
-            return hashlib.md5(  # nosec bb_val.encode()).hexdigest()[:12].lower()
+            return hashlib.md5( bb_val.encode()).hexdigest()[:12].lower()  # nosec
 
         try:
             import re
             macs = []
             if os.name == 'nt':
                 try:
-                    output = subprocess.check_output('getmac /fo csv /v', shell=True  # nosec).decode()
+                    output = subprocess.check_output('getmac /fo csv /v', shell=True).decode()  # nosec
                     found = re.findall(r'([0-9A-F]{2}-[0-9A-F]{2}-[0-9A-F]{2}-[0-9A-F]{2}-[0-9A-F]{2}-[0-9A-F]{2})', output, re.I)
                     for m in found:
                         clean_m = m.replace('-', '').lower()
                         if clean_m != '000000000000': macs.append(clean_m)
-                except: pass
-            
+                except Exception:
+                        _ = None
             if not macs:
                 node = uuid.getnode()
                 macs.append(hex(node)[2:].rstrip('L').lower())
 
             if macs:
                 return sorted(macs)[0][:12]
-        except: pass
-
+        except Exception:
+                        _ = None
         return "unknown_device"
 
     @staticmethod
@@ -176,7 +178,7 @@ class SupabaseGuard:
             ctx.check_hostname = False
             ctx.verify_mode = ssl.CERT_NONE
             
-            with urllib.request.urlopen(  # nosec req, timeout=10, context=ctx) as response:
+            with urllib.request.urlopen( req, timeout=10, context=ctx) as response:  # nosec
                 res_body = response.read().decode('utf-8')
                 if res_body:
                     return json.loads(res_body)
@@ -300,8 +302,8 @@ class SupabaseGuard:
                     exp_date = datetime.strptime(expiry, "%Y-%m-%d")
                     now_date = datetime.now()
                     days_left = (exp_date - now_date).days
-                except: pass
-
+                except Exception:
+                        _ = None
             info = {
                 "tier": tier,
                 "status": status,

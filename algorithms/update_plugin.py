@@ -25,7 +25,7 @@ class UpdatePlugin(QgsProcessingAlgorithm):
     # Kredensial Supabase Otomatis
     SUPABASE_URL = "https://mbfzmvlivyuajmxrecne.supabase.co" 
     SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1iZnptdmxpdnl1YWpteHJlY25lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU0NzgwODQsImV4cCI6MjA4MTA1NDA4NH0.sZltNY30ww2Hb_oopiVDcvXnZRehWRvK2jZZU5MO64s"  # pragma: allowlist secret
-    CURRENT_VERSION = "2.1.2" # Ganti ini saat merilis versi baru
+    CURRENT_VERSION = "2.1.3" # Ganti ini saat merilis versi baru
 
     def initAlgorithm(self, config=None):
         pass
@@ -48,7 +48,7 @@ class UpdatePlugin(QgsProcessingAlgorithm):
                 f"{self.SUPABASE_URL}/rest/v1/system_config?key=eq.qgis_toolbox_version",
                 headers={"apikey": self.SUPABASE_KEY, "Authorization": f"Bearer {self.SUPABASE_KEY}"}
             )
-            with urllib.request.urlopen(  # nosec req_ver, context=ctx, timeout=10) as response:
+            with urllib.request.urlopen(req_ver, context=ctx, timeout=10) as response:  # nosec
                 data = json.loads(response.read().decode())
                 if data: latest_version = data[0]['value']
                 
@@ -56,7 +56,7 @@ class UpdatePlugin(QgsProcessingAlgorithm):
                 f"{self.SUPABASE_URL}/rest/v1/system_config?key=eq.qgis_toolbox_download_url",
                 headers={"apikey": self.SUPABASE_KEY, "Authorization": f"Bearer {self.SUPABASE_KEY}"}
             )
-            with urllib.request.urlopen(  # nosec req_url, context=ctx, timeout=10) as response:
+            with urllib.request.urlopen(req_url, context=ctx, timeout=10) as response:  # nosec
                 data = json.loads(response.read().decode())
                 if data: download_url = data[0]['value']
                 
@@ -86,7 +86,7 @@ class UpdatePlugin(QgsProcessingAlgorithm):
             extract_temp = os.path.join(temp_dir, f"qgis_plugin_extracted_v{latest_version}")
             
             req_dl = urllib.request.Request(download_url, headers={'User-Agent': 'Mozilla/5.0'})
-            with urllib.request.urlopen(  # nosec req_dl, context=ctx, timeout=60) as response, open(new_zip_temp, 'wb') as out_file:
+            with urllib.request.urlopen(req_dl, context=ctx, timeout=60) as response, open(new_zip_temp, 'wb') as out_file:  # nosec
                 shutil.copyfileobj(response, out_file)
                 
             feedback.pushInfo("Unduhan selesai. Mengekstrak file ZIP...")
