@@ -45,7 +45,7 @@ class FertilizerCalculator(BasePlantationAlgorithm):
         return 'agronomy'
 
     def group(self):
-        return "03. Agronomy & Planting"
+        return '03. Agronomy & Planting'
 
     def get_minimum_tier(self):
         return 'basic'

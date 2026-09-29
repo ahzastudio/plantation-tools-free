@@ -71,7 +71,7 @@ class CreateMorfologi(BasePlantationAlgorithm):
         return '04. Morphology Classification (Klasifikasi Morfologi)'
 
     def group(self):
-        return "02. Topography & Hydrology"
+        return '02. Topography & Hydrology'
 
     def groupId(self):
         return 'topography'

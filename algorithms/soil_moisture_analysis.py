@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 from qgis.core import (
     QgsProcessing,
     QgsProcessingAlgorithm,
@@ -22,10 +22,10 @@ class SoilMoistureAnalysis(BasePlantationAlgorithm):
         return 'soilmoistureanalysis'
 
     def displayName(self):
-        return '17. Soil Moisture Analysis (Kelembapan Tanah)'
+        return '16. Soil Moisture Analysis (Kelembapan Tanah)'
 
     def group(self):
-        return "03. Agronomy & Planting"
+        return '03. Agronomy & Planting'
 
     def groupId(self):
         return 'agronomy'

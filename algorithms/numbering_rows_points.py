@@ -36,7 +36,7 @@ class NumberingRowsAndPoints(BasePlantationAlgorithm):
         return '09. Numbering Rows & Points (Penomoran Baris & Pokok)'
 
     def group(self):
-        return "03. Agronomy & Planting"
+        return '03. Agronomy & Planting'
 
     def groupId(self):
         return 'agronomy'

@@ -36,7 +36,7 @@ class HarvestRouteOptimizer(BasePlantationAlgorithm):
         return '19. Harvest Route Optimizer (Optimasi Rute Panen)'
 
     def group(self):
-        return "05. Infrastructure & Logistics"
+        return '05. Infrastructure & Logistics'
 
     def groupId(self):
         return 'infrastructure'

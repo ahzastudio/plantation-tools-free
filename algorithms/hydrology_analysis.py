@@ -35,7 +35,7 @@ class HydrologyAnalysis(BasePlantationAlgorithm):
         return '05. Hydrology & Drainage Analysis (Analisis Hidrologi)'
 
     def group(self):
-        return "02. Topography & Hydrology"
+        return '02. Topography & Hydrology'
 
     def groupId(self):
         return 'topography'

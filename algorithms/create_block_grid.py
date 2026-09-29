@@ -42,7 +42,7 @@ class CreateBlockGrid(BasePlantationAlgorithm):
         return '01. Create Block Grid (Membuat Grid Blok)'
 
     def group(self):
-        return "01. Land Preparation"
+        return '01. Land Preparation'
 
     def groupId(self):
         return 'land_prep'

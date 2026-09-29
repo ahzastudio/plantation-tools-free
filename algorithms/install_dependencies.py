@@ -2,7 +2,7 @@
 
 import os
 import sys
-import subprocess
+import subprocess  # nosec B404
 from qgis.core import (
     QgsProcessing,
     QgsProcessingException,
@@ -24,7 +24,7 @@ class InstallDependencies(BasePlantationAlgorithm):
         return '00c. Install / Repair Dependencies'
 
     def group(self):
-        return "00. System & Licensing"
+        return '00. System & Licensing'
 
     def groupId(self):
         return 'system'

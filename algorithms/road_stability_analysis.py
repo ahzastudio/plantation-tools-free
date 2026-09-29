@@ -34,7 +34,7 @@ class RoadStabilityAnalysis(BasePlantationAlgorithm):
         return '20. Road Stability Analysis (Analisis Risiko Jalan)'
 
     def group(self):
-        return "05. Infrastructure & Logistics"
+        return '05. Infrastructure & Logistics'
 
     def groupId(self):
         return 'infrastructure'

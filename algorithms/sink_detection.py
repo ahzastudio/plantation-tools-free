@@ -50,13 +50,13 @@ class SinkDetection(BasePlantationAlgorithm):
         return 'sinkdetection'
 
     def displayName(self):
-        return '25. Identifikasi Area Genangan (Sink Detection)'
+        return '27. Identifikasi Area Genangan (Sink Detection)'
 
     def group(self):
-        return "07. Analisa Infrastruktur (Jalan & Parit)"
+        return '07. Analisa Infrastruktur (Jalan & Parit)'
 
     def groupId(self):
-        return 'infrastructure_analysis'
+        return 'infra_analysis'
 
     def shortHelpString(self):
         return (

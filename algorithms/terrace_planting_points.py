@@ -43,7 +43,7 @@ class TerracePlantingPoints(BasePlantationAlgorithm):
         return '07. Generate Terrace Points (Titik Tanam Teras)'
 
     def group(self):
-        return "03. Agronomy & Planting"
+        return '03. Agronomy & Planting'
 
     def groupId(self):
         return 'agronomy'

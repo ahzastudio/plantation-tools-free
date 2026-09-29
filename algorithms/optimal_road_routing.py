@@ -36,13 +36,13 @@ class OptimalRoadRouting(BasePlantationAlgorithm):
         return 'optimalroadrouting'
 
     def displayName(self):
-        return '26. Optimal Road Routing (Analisis Jalur Jalan Optimal)'
+        return '25. Optimal Road Routing (Analisis Jalur Jalan Optimal)'
 
     def group(self):
-        return "07. Analisa Infrastruktur (Jalan & Parit)"
+        return '07. Analisa Infrastruktur (Jalan & Parit)'
 
     def groupId(self):
-        return 'infrastructure_analysis'
+        return 'infra_analysis'
 
     def createInstance(self):
         return OptimalRoadRouting()

@@ -30,10 +30,10 @@ class HitungJarakTanam(BasePlantationAlgorithm):
         return 'hitungjaraktanam'
 
     def displayName(self):
-        return '08. Hitung Jarak Tanam'
+        return '13. Planting Distance Assessment'
 
     def group(self):
-        return "03. Agronomy & Planting"
+        return '03. Agronomy & Planting'
 
     def groupId(self):
         return 'agronomy'

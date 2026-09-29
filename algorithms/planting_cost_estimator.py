@@ -31,7 +31,7 @@ class PlantingCostEstimator(BasePlantationAlgorithm):
         return '10. Planting Cost Estimator (Estimasi Biaya Tanam)'
 
     def group(self):
-        return "03. Agronomy & Planting"
+        return '03. Agronomy & Planting'
 
     def groupId(self):
         return 'agronomy'

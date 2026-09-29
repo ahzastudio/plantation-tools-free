@@ -45,7 +45,7 @@ class CreateKontur(BasePlantationAlgorithm):
         return '02. Create Contours (Buat Kontur)'
 
     def group(self):
-        return "02. Topography & Hydrology"
+        return '02. Topography & Hydrology'
 
     def groupId(self):
         return 'topography'

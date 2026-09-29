@@ -31,7 +31,7 @@ class PlantingDistanceAssessment(BasePlantationAlgorithm):
         return 'plantingdistanceassessment'
 
     def displayName(self):
-        return '14. Planting Distance Assessment'
+        return '13. Planting Distance Assessment'
 
     def group(self):
         return '03. Agronomy & Planting'

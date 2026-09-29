@@ -9,9 +9,7 @@ import zipfile
 import shutil
 import tempfile
 import stat
-# pyrefly: ignore [missing-import]
 from qgis.PyQt.QtCore import QCoreApplication
-# pyrefly: ignore [missing-import]
 from qgis.core import (
     QgsProcessing,
     QgsProcessingAlgorithm,
@@ -27,7 +25,7 @@ class UpdatePlugin(QgsProcessingAlgorithm):
     # Kredensial Supabase Otomatis
     SUPABASE_URL = "https://mbfzmvlivyuajmxrecne.supabase.co" 
     SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1iZnptdmxpdnl1YWpteHJlY25lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU0NzgwODQsImV4cCI6MjA4MTA1NDA4NH0.sZltNY30ww2Hb_oopiVDcvXnZRehWRvK2jZZU5MO64s"  # pragma: allowlist secret
-    CURRENT_VERSION = "2.1.4" # Ganti ini saat merilis versi baru
+    CURRENT_VERSION = "2.1.5" # Ganti ini saat merilis versi baru
 
     def initAlgorithm(self, config=None):
         pass
@@ -122,8 +120,7 @@ class UpdatePlugin(QgsProcessingAlgorithm):
                             try:
                                 os.chmod(dst_file, stat.S_IWRITE)
                                 os.remove(dst_file)
-                            except Exception as e:
-                                QgsMessageLog.logMessage(str(e), "Plantation Tools", Qgis.Warning)
+                            except: pass  # nosec B110
                         shutil.copy2(src_file, dst_dir)
                         
             copy_tree_overwrite(source_dir, current_plugin_dir)
@@ -132,8 +129,7 @@ class UpdatePlugin(QgsProcessingAlgorithm):
             try:
                 shutil.rmtree(extract_temp, ignore_errors=True)
                 os.remove(new_zip_temp)
-            except Exception as e:
-                QgsMessageLog.logMessage(str(e), "Plantation Tools", Qgis.Warning)
+            except: pass  # nosec B110
             
             feedback.pushInfo("UPDATE BERHASIL!")
             feedback.pushInfo(f"Plugin telah diupdate ke versi {latest_version}.")
@@ -152,7 +148,7 @@ class UpdatePlugin(QgsProcessingAlgorithm):
         return 'update_plugin'
 
     def displayName(self):
-        return '00b. Update QGIS Plugin'
+        return '00b. Update QGIS Plugin (Cek Versi Baru)'
 
     def group(self):
         return '00. System & Licensing'

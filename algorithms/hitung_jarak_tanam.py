@@ -34,7 +34,7 @@ class HitungJarakTanam(BasePlantationAlgorithm):
         return '08. Hitung Jarak Tanam'
 
     def group(self):
-        return "03. Agronomy & Planting"
+        return '03. Agronomy & Planting'
 
     def groupId(self):
         return 'agronomy'

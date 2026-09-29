@@ -5,7 +5,7 @@ qgisMaximumVersion=4.99.0
 supportsQt6=True
 hasProcessingProvider=yes
 description=Professional Spatial Analysis Tools for Oil Palm Plantations and Infrastructure.
-version=2.1.4
+version=2.1.5
 author=Ahza Studio
 email=admin@ahzastudio.web.id
 about=Professional Spatial Analysis Tools for Oil Palm Plantations. Supports road network analysis, drainage, hydrology, intercropping, planting distance mapping, AI-based palm tree detection, and drone mission planning.
@@ -16,9 +16,8 @@ category=Plugins
 icon=icon.png
 tags=plantation, block, grid, palm oil, roads, cost estimator
 
-changelog=v2.1.4
-    - Fixed SyntaxError on plugin load caused by invalid # nosec placement
-    - Update contact email to admin@ahzastudio.web.id for official communications
-    - Fixed security issues detected by QGIS automated security scanner (Bandit & detect-secrets)
-    - Added # nosec and # pragma: allowlist secret tags to explicitly declare safe variables
-    - Improved error logging using QgsMessageLog to comply with QGIS security guidelines
+changelog=v2.1.5
+    - Standardized 10 category structures across QGIS and ArcGIS
+    - Moved Road Cut & Fill Analysis to 05. Infrastructure & Logistics
+    - Implemented persistent Sticky Machine ID and enhanced Supabase security
+    - Added AI Land Clearing & Road Detection algorithm

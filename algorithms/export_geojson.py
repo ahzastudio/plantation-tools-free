@@ -28,7 +28,7 @@ class ExportToGeoJSON(BasePlantationAlgorithm):
         return '22. Export to GeoJSON (WebGIS)'
 
     def group(self):
-        return "06. Web & Reporting"
+        return '06. Web & Reporting'
 
     def groupId(self):
         return 'web_reporting'

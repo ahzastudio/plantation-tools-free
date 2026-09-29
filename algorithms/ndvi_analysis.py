@@ -33,10 +33,10 @@ class NDVIAnalysis(BasePlantationAlgorithm):
         return 'ndvianalysis'
 
     def displayName(self):
-        return '15. NDVI Analysis (Vegetation Index)'
+        return '14. NDVI Analysis (Vegetation Index)'
 
     def group(self):
-        return "03. Agronomy & Planting"
+        return '03. Agronomy & Planting'
 
     def groupId(self):
         return 'agronomy'

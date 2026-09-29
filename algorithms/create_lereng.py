@@ -61,7 +61,7 @@ class CreateLereng(BasePlantationAlgorithm):
         return '03. Slope Classification (Klasifikasi Lereng)'
 
     def group(self):
-        return "02. Topography & Hydrology"
+        return '02. Topography & Hydrology'
 
     def groupId(self):
         return 'topography'

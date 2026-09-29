@@ -31,7 +31,9 @@ import math
 import uuid
 
 class DroneMissionPlanner(BasePlantationAlgorithm):
+    P_MISSION_TYPE = 'MISSION_TYPE'
     P_AOI = 'AOI'
+    P_CORRIDOR_WIDTH = 'CORRIDOR_WIDTH'
     P_DEM = 'DEM'
     P_AGL = 'AGL'
     P_OVERLAP = 'OVERLAP'
@@ -61,7 +63,7 @@ class DroneMissionPlanner(BasePlantationAlgorithm):
         return '21. Drone Mission Planner (Terrain Follow)'
 
     def group(self):
-        return "05. Infrastructure & Logistics"
+        return '05. Infrastructure & Logistics'
 
     def groupId(self):
         return 'infrastructure'
@@ -73,8 +75,24 @@ class DroneMissionPlanner(BasePlantationAlgorithm):
         return "Membuat jalur terbang drone 3D (Waypoints/Path) yang dinamis mengikuti kontur permukaan (DEM) untuk menjaga konsistensi resolusi GSD."
 
     def initAlgorithm(self, config=None):
+        self.addParameter(QgsProcessingParameterEnum(
+            self.P_MISSION_TYPE, 'Mission Type',
+            options=['Grid', 'Corridor', 'Orbit', 'Waypoint (Custom)'],
+            defaultValue=0
+        ))
+        
         self.addParameter(QgsProcessingParameterFeatureSource(
-            self.P_AOI, 'Area of Interest (AOI Polygon)', types=[QgsProcessing.TypeVectorPolygon]
+            self.P_AOI, 'Area of Interest (Polygon / Line / Point)', types=[QgsProcessing.TypeVectorPolygon, QgsProcessing.TypeVectorLine, QgsProcessing.TypeVectorPoint]
+        ))
+        
+        self.addParameter(QgsProcessingParameterNumber(
+            self.P_CORRIDOR_WIDTH, 'Corridor Width (m) [For Line Input]',
+            type=QgsProcessingParameterNumber.Integer, defaultValue=100
+        ))
+        
+        self.addParameter(QgsProcessingParameterNumber(
+            self.P_ORBIT_RADIUS, 'Orbit Radius (m) [Khusus Misi Orbit]',
+            type=QgsProcessingParameterNumber.Double, defaultValue=50.0
         ))
         
         self.addParameter(QgsProcessingParameterRasterLayer(
@@ -115,7 +133,12 @@ class DroneMissionPlanner(BasePlantationAlgorithm):
         # New Camera & Mission Parameters
         self.addParameter(QgsProcessingParameterEnum(
             self.P_CAMERA_PRESET, 'Camera Sensor Preset',
-            options=['DJI Mavic 3E', 'DJI Phantom 4 Pro / Mavic 2 Pro', 'DJI Mini 3/4 Pro', 'Custom'],
+            options=[
+                'DJI Mavic 3 Enterprise', 'DJI Zenmuse P1 (35mm)', 'DJI Phantom 4 RTK', 'DJI Mavic 3 Multispectral',
+                'DJI Mavic 3', 'DJI Mavic 3 Classic', 'DJI Mavic 3 Pro', 'DJI Mavic 4 Pro',
+                'DJI Air 3', 'DJI Air 3S', 'DJI Mini 4 Pro', 'DJI Mini 5 Pro', 'DJI Lito X1',
+                'Potensic Atom 2', 'Potensic Atom 3', 'Custom'
+            ],
             defaultValue=0
         ))
         

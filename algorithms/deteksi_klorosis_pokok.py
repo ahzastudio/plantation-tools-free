@@ -30,7 +30,7 @@ class DeteksiKlorosisPokok(BasePlantationAlgorithm):
         return 'deteksiklorosispokok'
 
     def displayName(self):
-        return '16. Deteksi Klorosis Pokok (Hybrid)'
+        return '15. Deteksi Klorosis Pokok (Hybrid)'
 
     def group(self):
         return '03. Agronomy & Planting'

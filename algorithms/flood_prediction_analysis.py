@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 # pyrefly: ignore [missing-import]
 from qgis.core import (
     QgsProcessing,
@@ -22,10 +22,10 @@ class FloodPredictionAnalysis(BasePlantationAlgorithm):
         return 'floodpredictionanalysis'
 
     def displayName(self):
-        return "30. Flood Prediction Analysis (Prediksi Area Banjir)"
+        return '28. Flood Prediction Analysis (Prediksi Area Banjir)'
 
     def group(self):
-        return "08. Analisa Lingkungan & NKT"
+        return '08. Analisa Lingkungan & NKT'
 
     def groupId(self):
         return 'environment_nkt'

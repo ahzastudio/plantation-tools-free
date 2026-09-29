@@ -23,6 +23,7 @@ from .algorithms.road_cut_fill_analysis import RoadCutFillAnalysis
 from .algorithms.planting_distance_assessment import PlantingDistanceAssessment
 from .algorithms.ndvi_analysis import NDVIAnalysis
 from .algorithms.oil_palm_detection import OilPalmDetection
+from .algorithms.land_clearing_detection import LandClearingDetection
 from .algorithms.install_dependencies import InstallDependencies
 from .algorithms.harvest_route_optimizer import HarvestRouteOptimizer
 from .algorithms.road_stability_analysis import RoadStabilityAnalysis
@@ -33,7 +34,8 @@ from .algorithms.infrastructure_buffer_analysis import InfrastructureBufferAnaly
 from .algorithms.optimal_road_routing import OptimalRoadRouting
 from .algorithms.placeholders import (
     CheckLicenseStatus,
-    AnalisisAreaKonservasi
+    AnalisisAreaKonservasi,
+    TraverseToPolygon
 )
 from .algorithms.update_plugin import UpdatePlugin
 from .algorithms.generate_dummy_data import GenerateDummyData
@@ -51,6 +53,7 @@ class PlantationProvider(QgsProcessingProvider):
         
         # 01. Land Preparation
         self.addAlgorithm(CreateBlockGrid())
+        self.addAlgorithm(TraverseToPolygon())
 
         # 02. Topography & Hydrology
         self.addAlgorithm(CreateKontur())
@@ -75,6 +78,7 @@ class PlantationProvider(QgsProcessingProvider):
         
         # 04. Plantation Intelligence (AI)
         self.addAlgorithm(OilPalmDetection())
+        self.addAlgorithm(LandClearingDetection())
         
         # 05. Infrastructure & Logistics
         self.addAlgorithm(HarvestRouteOptimizer())

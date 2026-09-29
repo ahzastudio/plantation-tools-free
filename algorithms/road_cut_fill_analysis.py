@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 import math
 from qgis.core import (
@@ -33,13 +33,13 @@ class RoadCutFillAnalysis(BasePlantationAlgorithm):
         return 'roadcutfillanalysis'
 
     def displayName(self):
-        return '13. Road Cut & Fill Analysis (Analisis Gali Timbun Jalan)'
+        return '18. Road Cut & Fill Analysis (Analisis Gali Timbun Jalan)'
 
     def group(self):
-        return "03. Agronomy & Planting"
+        return '05. Infrastructure & Logistics'
 
     def groupId(self):
-        return 'agronomy'
+        return 'infrastructure'
 
     def createInstance(self):
         return RoadCutFillAnalysis()

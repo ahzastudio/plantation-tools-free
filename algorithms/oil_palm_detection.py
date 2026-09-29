@@ -33,6 +33,7 @@ except ImportError:
 
 class OilPalmDetection(BasePlantationAlgorithm):
     P_INPUT_RASTER = 'INPUT_RASTER'
+    P_PROFILE = 'PROFILE'
     P_MODEL_FILE = 'MODEL_FILE'
     P_AOI_MASK = 'AOI_MASK'
     P_CONF_THRESHOLD = 'CONF_THRESHOLD'
@@ -44,6 +45,8 @@ class OilPalmDetection(BasePlantationAlgorithm):
     P_CLUSTER_DIST = 'CLUSTER_DIST'
     P_STRICT_AOI = 'STRICT_AOI'
     P_ENGINE = 'ENGINE'
+    P_EXG_THRESH = 'EXG_THRESH'
+    P_BLUR_FILTER = 'BLUR_FILTER'
     P_OUTPUT = 'OUTPUT'
 
     def get_minimum_tier(self):
@@ -53,27 +56,33 @@ class OilPalmDetection(BasePlantationAlgorithm):
         return 'oilpalmdetection'
 
     def displayName(self):
-        return '18. Oil Palm Detection (Deteksi Pohon Sawit)'
+        return '17. AI Tree Counting (Hybrid)'
 
     def group(self):
         return '04. Plantation Intelligence (AI)'
 
     def groupId(self):
-        return 'ai'
+        return 'intelligence'
 
     def createInstance(self):
         return OilPalmDetection()
 
     def shortHelpString(self):
-        return "Automatically detects oil palm trees from high-resolution imagery using AI (Deep Learning ONNX)."
+        return "Automatically detects oil palm trees or natural forest canopies using Deep Learning (ONNX) or ExG Hybrid algorithms."
 
     def initAlgorithm(self, config=None):
         self.addParameter(QgsProcessingParameterRasterLayer(
             self.P_INPUT_RASTER, 'Input Image (Raster RGB)'
         ))
         
+        self.addParameter(QgsProcessingParameterEnum(
+            self.P_PROFILE, 'Detection Profile', 
+            options=['Oil Palm (ONNX Deep Learning)', 'Natural Forest (ExG Hybrid)', 'Oil Palm (ExG Hybrid)'], 
+            defaultValue=0
+        ))
+        
         self.addParameter(QgsProcessingParameterFile(
-            self.P_MODEL_FILE, 'AI Model File (.onnx)', extension='onnx'
+            self.P_MODEL_FILE, 'AI Model File (.onnx) [Only for ONNX Profile]', extension='onnx', optional=True
         ))
         
         self.addParameter(QgsProcessingParameterFeatureSource(
@@ -81,11 +90,19 @@ class OilPalmDetection(BasePlantationAlgorithm):
         ))
         
         self.addParameter(QgsProcessingParameterNumber(
-            self.P_CONF_THRESHOLD, 'Confidence Threshold', type=QgsProcessingParameterNumber.Double, defaultValue=0.15
+            self.P_CONF_THRESHOLD, 'Confidence Threshold [ONNX]', type=QgsProcessingParameterNumber.Double, defaultValue=0.15
         ))
         
         self.addParameter(QgsProcessingParameterNumber(
-            self.P_IOU_THRESHOLD, 'IoU Threshold', type=QgsProcessingParameterNumber.Double, defaultValue=0.25
+            self.P_IOU_THRESHOLD, 'IoU Threshold [ONNX]', type=QgsProcessingParameterNumber.Double, defaultValue=0.25
+        ))
+        
+        self.addParameter(QgsProcessingParameterNumber(
+            self.P_EXG_THRESH, 'ExG Threshold [Only for ExG Profile]', type=QgsProcessingParameterNumber.Integer, defaultValue=18
+        ))
+        
+        self.addParameter(QgsProcessingParameterBoolean(
+            self.P_BLUR_FILTER, 'Exclude Blurry Areas [ExG Profile]', defaultValue=False
         ))
         
         self.addParameter(QgsProcessingParameterNumber(
@@ -113,30 +130,44 @@ class OilPalmDetection(BasePlantationAlgorithm):
         ))
         
         self.addParameter(QgsProcessingParameterEnum(
-            self.P_ENGINE, 'Processing Engine', options=['Auto-Detect (GPU if available)', 'Force CPU'], defaultValue=0
+            self.P_ENGINE, 'Processing Engine [ONNX]', options=['Auto-Detect (GPU if available)', 'Force CPU'], defaultValue=0
         ))
         
         self.addParameter(QgsProcessingParameterFeatureSink(
             self.P_OUTPUT, 'Output Detections (Point)', type=QgsProcessing.TypeVectorPoint
         ))
 
-    def check_dependencies(self, feedback):
+    def ensure_dependencies(self, feedback, needs_onnx, needs_scipy):
         missing = []
-        try:
-            import onnxruntime
-        except ImportError:
-            missing.append("onnxruntime")
-            
-        try:
-            import cv2
-        except ImportError:
-            missing.append("opencv-python")
-            
+        if needs_onnx:
+            try:
+                import onnxruntime
+            except ImportError:
+                missing.append("onnxruntime")
+            try:
+                import cv2
+            except ImportError:
+                missing.append("opencv-python")
+        
+        if needs_scipy:
+            try:
+                import scipy.ndimage
+            except ImportError:
+                missing.append("scipy")
+                
         if missing:
-            raise QgsProcessingException(
-                f"Modul Python berikut belum terinstal: {', '.join(missing)}. "
-                "Silakan buka OSGeo4W Shell dan jalankan: python -m pip install onnxruntime opencv-python"
-            )
+            feedback.pushInfo(f"Memulai instalasi otomatis modul yang kurang: {', '.join(missing)}...")
+            import subprocess, sys
+            try:
+                python_exe = sys.executable
+                subprocess.check_call([python_exe, "-m", "pip", "install"] + missing, 
+                                      stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                feedback.pushInfo("Instalasi berhasil! Memuat ulang modul...")
+            except Exception as e:
+                raise QgsProcessingException(
+                    f"Gagal menginstal {missing} secara otomatis. Error: {str(e)}. "
+                    "Silakan buka OSGeo4W Shell dan instal secara manual dengan pip."
+                )
 
     def calculate_iou(self, box1, box2):
         x1_1, y1_1, x2_1, y2_1 = box1
@@ -166,7 +197,6 @@ class OilPalmDetection(BasePlantationAlgorithm):
         import numpy as np
         if not points: return []
         
-        # We can try sklearn DBSCAN, or fallback to distance check
         try:
             from sklearn.cluster import DBSCAN
             centers = np.array([[d['x'], d['y']] for d in points])
@@ -192,6 +222,22 @@ class OilPalmDetection(BasePlantationAlgorithm):
                     unique.append(p)
                     used_pos.append(curr)
             return unique
+
+    def refine_centroid(self, veg_mask, exg, px_i, py_i, radius):
+        import numpy as np
+        h, w = veg_mask.shape
+        y0, y1 = max(0, py_i - radius), min(h, py_i + radius + 1)
+        x0, x1 = max(0, px_i - radius), min(w, px_i + radius + 1)
+        if x1 <= x0 or y1 <= y0: return px_i, py_i
+        ys, xs = np.mgrid[y0:y1, x0:x1]
+        dist2 = (xs - px_i) ** 2 + (ys - py_i) ** 2
+        decay = np.exp(-dist2 / (2 * (max(1, radius / 2.0)) ** 2))
+        local_w = np.clip(exg[y0:y1, x0:x1], 0, None) * veg_mask[y0:y1, x0:x1] * decay
+        total = local_w.sum()
+        if total <= 0: return px_i, py_i
+        cy = float((ys * local_w).sum() / total)
+        cx = float((xs * local_w).sum() / total)
+        return int(round(cx)), int(round(cy))
 
     def processAlgorithm(self, parameters, context, feedback):
         from qgis.core import QgsProcessingException

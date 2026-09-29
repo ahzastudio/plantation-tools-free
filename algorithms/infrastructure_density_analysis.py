@@ -43,10 +43,10 @@ class InfrastructureDensityAnalysis(BasePlantationAlgorithm):
         return '23. Kerapatan Infrastruktur (Jalan & Parit)'
 
     def group(self):
-        return "07. Analisa Infrastruktur (Jalan & Parit)"
+        return '07. Analisa Infrastruktur (Jalan & Parit)'
 
     def groupId(self):
-        return 'infrastructure_analysis'
+        return 'infra_analysis'
 
     def createInstance(self):
         return InfrastructureDensityAnalysis()

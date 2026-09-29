@@ -30,7 +30,7 @@ class CalculateSPH(BasePlantationAlgorithm):
         return '12. Calculate SPH (Stand Per Hectare)'
 
     def group(self):
-        return "03. Agronomy & Planting"
+        return '03. Agronomy & Planting'
 
     def groupId(self):
         return 'agronomy'

@@ -24,13 +24,13 @@ class BlockCentroidRouting(BasePlantationAlgorithm):
         return 'blockcentroidrouting'
 
     def displayName(self):
-        return "29. Block Centroid Routing (Kalkulator Jalan via Centroid)"
+        return '26. Block Centroid Routing (Kalkulator Jalan via Centroid)'
 
     def group(self):
-        return "07. Analisa Infrastruktur (Jalan & Parit)"
+        return '07. Analisa Infrastruktur (Jalan & Parit)'
 
     def groupId(self):
-        return 'infrastructure_analysis'
+        return 'infra_analysis'
 
     def shortHelpString(self):
         return "Mengekstrak centroid dari blok dan membuat jaringan jalan."
