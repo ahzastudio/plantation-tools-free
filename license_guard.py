@@ -130,10 +130,12 @@ class SupabaseGuard:
                         decoded = decoded[::-1].strip().lower()
                         if len(decoded) == 12:
                             return decoded
-                    except Exception:
-                        pass
-            except Exception:
-                pass
+                    except Exception as e:
+                        import qgis.core
+                        qgis.core.QgsMessageLog.logMessage(f"Error: {e}", "PlantationTools", qgis.core.Qgis.Warning)
+            except Exception as e:
+                import qgis.core
+                qgis.core.QgsMessageLog.logMessage(f"Error: {e}", "PlantationTools", qgis.core.Qgis.Warning)
 
         def get_hw_info(wmic_cmd, ps_cmd):
             try:
@@ -230,10 +232,12 @@ class SupabaseGuard:
                     try:
                         wpath = unicode(id_file) if 'unicode' in __builtins__ else str(id_file)
                         ctypes.windll.kernel32.SetFileAttributesW(wpath, 0x02) # FILE_ATTRIBUTE_HIDDEN
-                    except Exception:
-                        pass
-            except Exception:
-                pass
+                    except Exception as e:
+                        import qgis.core
+                        qgis.core.QgsMessageLog.logMessage(f"Error: {e}", "PlantationTools", qgis.core.Qgis.Warning)
+            except Exception as e:
+                import qgis.core
+                qgis.core.QgsMessageLog.logMessage(f"Error: {e}", "PlantationTools", qgis.core.Qgis.Warning)
 
         return uid
 
